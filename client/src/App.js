@@ -9,14 +9,32 @@ function DataLine({ name, data }) {
   );
 }
 
+// get readable byte number in terms of highest unit of file size measurement
+// e.g. readableBytes(1000) => 1.00 mb
+function readableBytes(bytes) {
+  const fileSizeUnits = ["gb", "mb", "kb", "b"];
+  let unitIdx = 0,
+    numBytesInUnit = 1e9;
+
+  while (bytes < numBytesInUnit && unitIdx < fileSizeUnits.length - 1) {
+    unitIdx += 1;
+    numBytesInUnit /= 1000;
+  }
+
+  const unitNum = (bytes / numBytesInUnit).toFixed(2);
+  const unit = fileSizeUnits[unitIdx];
+  return `${unitNum} ${unit}`;
+}
+
 function AudioData({ data }) {
   const { fileType, fileSize, codecType, duration, channelCount } = data;
+  const readableFileSize = readableBytes(fileSize);
   return (
     <>
       <DataLine name="File Type" data={fileType} />
-      <DataLine name="File Size" data={fileSize} />
+      <DataLine name="File Size" data={readableFileSize} />
       <DataLine name="Codec Type" data={codecType} />
-      <DataLine name="Duration" data={duration} />
+      <DataLine name="Duration" data={duration + " secs"} />
       <DataLine name="Channel Count" data={channelCount} />
     </>
   );
