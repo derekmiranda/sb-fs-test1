@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const morgan = require("morgan");
 
 const info = require("./info");
@@ -13,6 +14,8 @@ const log = function (...items) {
 };
 
 const app = express();
+// CORS
+app.use(cors());
 // request logging
 app.use(morgan("tiny"));
 
