@@ -58,6 +58,10 @@ function App() {
         .then((res) => res.json())
         .then((json) => {
           updateAudioData(json.data);
+        })
+        .catch((error) => {
+          console.error("ERROR:", error);
+          updateErrorOccurred(true);
         });
     }
   });
